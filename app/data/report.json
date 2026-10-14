@@ -1,0 +1,10 @@
+{
+    "product_count": 3,
+    "available_product_count": 2,
+    "out_of_stock_count": 1,
+    "inventory_value": 83000,
+    "categories": [
+        "display",
+        "peripherals"
+    ]
+}

@@ -1,34 +1,18 @@
-from calculator import calculate_total
-
-
-PRODUCTS = [
-    {"name": "Mechanical Keyboard", "price": 3500.00, "quantity": 2, "discount": 10}
-]
-
-
-def print_order(product: dict) -> None:
-    """
-    Print the order details for a given product.
-
-    :param product: A dictionary containing product details.
-    """
-    name = product.get("name")
-    price = product.get("price")
-    quantity = product.get("quantity")
-    discount = product.get("discount", 0)
-
-    total_price = calculate_total(price, quantity, discount)
-    print(f"Product: {name}")
-    print(f"Price: {price:.2f}")
-    print(f"Quantity: {quantity}")
-    print(f"Discount: {discount}%")
-    print(f"Total: {total_price:.2f}")
-
-
-def main() -> None:
-    for product in PRODUCTS:
-        print_order(product)
-
+from products import load_products, available_products, products_by_category, total_inventory_value, build_summary, save_report, find_product, ProductNotFoundError
 
 if __name__ == "__main__":
-    main()
+    products = load_products("data/products.json")
+    print([p["name"] for p in available_products(products)])            # ['Keyboard', 'Monitor']
+    print([p["name"] for p in products_by_category(products, "display")])  # ['Monitor']
+    print(total_inventory_value(products))                              # 83000
+
+    report = build_summary(products)
+    print(report)
+    save_report(report, "data/report.json")
+
+    print(find_product(products, 3)["name"])   # Monitor
+
+    try:
+        find_product(products, 99)
+    except ProductNotFoundError as e:
+        print(f"Caught: {e}")                  # Caught: Product with id 99 not found
